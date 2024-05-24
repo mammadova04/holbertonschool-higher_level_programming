@@ -7,6 +7,7 @@ def check(tuple_c=()):
     else:
         return tuple_c
 
+
 def add_tuple(tuple_a=(), tuple_b=()):
     tuple_a = check(tuple_a)
     tuple_b = check(tuple_b)

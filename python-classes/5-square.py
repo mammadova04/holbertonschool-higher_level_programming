@@ -6,7 +6,7 @@ class Square:
     """Square class with private attribute size"""
     def __init__(self, size=0) -> None:
         """Initialize Square with size attribute"""
-        self.size = size  # Use the property setter to set the size
+        self.__size = size
 
     @property
     def size(self):
@@ -16,18 +16,20 @@ class Square:
     def size(self, value):
         if not isinstance(value, int):
             raise TypeError("size must be an integer")
-        if value < 0:
+        elif self.__size < 0:
             raise ValueError("size must be >= 0")
-        self.__size = value
+        else:
+            self.__size = value
 
     def area(self):
-        """Public instance method that returns the current square area."""
+        """Public instance method that returns the
+        current square area.
+        """
         return self.__size ** 2
 
     def my_print(self):
-        """Public instance method that prints the square with the character #."""
         if self.__size == 0:
-            print("")
+            print()
         else:
-            for _ in range(self.__size):
+            for i in range(self.__size):
                 print("#" * self.__size)

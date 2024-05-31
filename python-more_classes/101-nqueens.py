@@ -3,6 +3,7 @@
 
 import sys
 
+
 def is_valid(board, row, col):
     for i in range(row):
         if board[i] == col or \
@@ -10,6 +11,7 @@ def is_valid(board, row, col):
            board[i] + i == col + row:
             return False
     return True
+
 
 def solve_nqueens(N, row, board, solutions):
     if row == N:
@@ -20,17 +22,19 @@ def solve_nqueens(N, row, board, solutions):
             board[row] = col
             solve_nqueens(N, row + 1, board, solutions)
 
+
 def nqueens(N):
     board = [-1] * N
     solutions = []
     solve_nqueens(N, 0, board, solutions)
     return solutions
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
-    
+
     try:
         N = int(sys.argv[1])
     except ValueError:

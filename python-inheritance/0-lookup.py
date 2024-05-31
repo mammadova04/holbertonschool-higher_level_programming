@@ -4,4 +4,5 @@
 
 def lookup(obj):
     """LookUp func"""
-    return(obj)
+
+    return dir(obj)

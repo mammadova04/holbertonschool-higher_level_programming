@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -32,4 +33,3 @@ def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=80
 
 if __name__ == "__main__":
     run()
-

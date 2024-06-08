@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+# In-memory storage for users
 all_users = {}
 
 @app.route('/')
@@ -40,3 +41,4 @@ def status():
 
 if __name__ == "__main__":
     app.run()
+

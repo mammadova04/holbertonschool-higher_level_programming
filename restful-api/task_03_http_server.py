@@ -1,32 +1,34 @@
-import requests
+import json
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
-def test_root_endpoint():
-    response = requests.get('http://localhost:8000/')
-    assert response.status_code == 200
-    assert response.text == "Hello, this is a simple API!"
-    print("Test if root endpoint returns correct content.: OK")
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+    def _set_headers(self, content_type='text/html'):
+        self.send_response(200)
+        self.send_header('Content-type', content_type)
+        self.end_headers()
 
-def test_data_endpoint():
-    response = requests.get('http://localhost:8000/data')
-    assert response.status_code == 200
-    assert response.json() == {"name": "John", "age": 30, "city": "New York"}
-    print("Test if data endpoint returns correct data.: OK")
+    def do_GET(self):
+        if self.path == '/':
+            self._set_headers()
+            self.wfile.write(b"Hello, this is a simple API!")
+        elif self.path == '/data':
+            self._set_headers('application/json')
+            data = {"name": "John", "age": 30, "city": "New York"}
+            self.wfile.write(json.dumps(data).encode('utf-8'))
+        elif self.path == '/status':
+            self._set_headers()
+            self.wfile.write(b"OK")
+        else:
+            self.send_error(404, "Endpoint not found")
 
-def test_status_endpoint():
-    response = requests.get('http://localhost:8000/status')
-    assert response.status_code == 200
-    assert response.json() == {"status": "OK"}
-    print("Test if status endpoint returns correct status.: OK")
+    def do_POST(self):
+        self.send_error(405, "Method Not Allowed")
 
-def test_undefined_endpoint():
-    response = requests.get('http://localhost:8000/undefined')
-    assert response.status_code == 404
-    assert response.json() == {"error": "Endpoint not found"}
-    print("Test if undefined endpoint returns correct status.: OK")
+def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=8000):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    print(f'Starting httpd server on port {port}...')
+    httpd.serve_forever()
 
 if __name__ == "__main__":
-    test_root_endpoint()
-    test_data_endpoint()
-    test_status_endpoint()
-    test_undefined_endpoint()
-
+    run()
